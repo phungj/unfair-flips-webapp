@@ -1,17 +1,13 @@
 'use client'
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 
-import Title from '@/components/Title'
+import TitleDialog from '@/components/TitleDialog'
 import Coin from '@/components/Coin'
 import FlipButton from "@/components/FlipButton";
 import FlipHistory from "@/components/FlipHistory";
 import VictoryScreen from "@/components/VictoryScreen";
 
-// TODO: Get styling done
-// TODO: look into globals.css and layout.tsx
-// TODO: Update the flip history to a table
-// TODO: Possibly move the flip history to the side in a list alongside the flips and button, which means getting the holy grail set up?
-
+// TODO: look into layout.tsx
 export default function App() {
     const MAX_FLIPS = 10;
 
@@ -19,16 +15,28 @@ export default function App() {
     const [flips, setFlips] = useState([]);
     const [flipCount, setFlipCount] = useState(0);
 
+    const titleDialogRef = useRef(null);
+
+    useEffect(() => {titleDialogRef.current?.showModal();}, []);
+
     if (flips.length === MAX_FLIPS && flips.every(flip => flip === 'Heads')) {
         return <VictoryScreen flipCount={flipCount}/>;
     }
 
     return (
         <div>
-            <Title/>
-            <Coin flip={flip}/>
-            <FlipButton flipHandler={flipCoin}/>
-            <FlipHistory flips={flips}/>
+            <TitleDialog titleDialogRef={titleDialogRef}/>
+            <div className='min-h-screen flex items-center justify-center'>
+                <div className='flex h-100 gap-4'>
+                    <div className='flex-1'>
+                        <div className='mb-1'>
+                            <Coin flip={flip}/>
+                        </div>
+                        <FlipButton flipHandler={flipCoin}/>
+                    </div>
+                    <FlipHistory flips={flips}/>
+                </div>
+            </div>
         </div>);
 
     function flipCoin() {
