@@ -1,4 +1,10 @@
-export default function FlipHistory({flips}) {
+import type { CoinSide } from '@/components/App'
+
+type FlipHistoryProps = {
+    flips: CoinSide[];
+};
+
+export default function FlipHistory({flips}: FlipHistoryProps) {
     return (
         <div>
             <h1 className='font-title text-heading text-2xl font-bold'>Last 10 Flips</h1>

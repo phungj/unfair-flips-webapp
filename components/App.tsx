@@ -1,31 +1,29 @@
 'use client'
-import { useState, useRef, useEffect } from "react"
+import { useState } from "react"
 
 import TitleDialog from '@/components/TitleDialog'
 import Coin from '@/components/Coin'
 import FlipButton from "@/components/FlipButton";
 import FlipHistory from "@/components/FlipHistory";
-import VictoryScreen from "@/components/VictoryScreen";
+import VictoryDialog from "@/components/VictoryDialog";
 
-// TODO: look into layout.tsx
+const COIN_SIDES = ['Heads', 'Tails'] as const;
+export type CoinSide = typeof COIN_SIDES[number];
+
 export default function App() {
     const MAX_FLIPS = 10;
 
-    const [flip, setFlip] = useState('Heads');
-    const [flips, setFlips] = useState([]);
-    const [flipCount, setFlipCount] = useState(0);
-
-    const titleDialogRef = useRef(null);
-
-    useEffect(() => {titleDialogRef.current?.showModal();}, []);
+    const [flip, setFlip] = useState<CoinSide>('Heads');
+    const [flips, setFlips] = useState<CoinSide[]>([]);
+    const [flipCount, setFlipCount] = useState<number>(0);
 
     if (flips.length === MAX_FLIPS && flips.every(flip => flip === 'Heads')) {
-        return <VictoryScreen flipCount={flipCount}/>;
+        return <VictoryDialog flipCount={flipCount}/>;
     }
 
     return (
         <div>
-            <TitleDialog titleDialogRef={titleDialogRef}/>
+            <TitleDialog/>
             <div className='min-h-screen flex items-center justify-center'>
                 <div className='flex h-100 gap-4'>
                     <div className='flex-1'>

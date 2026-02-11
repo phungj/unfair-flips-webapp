@@ -2,7 +2,11 @@ import Image from 'next/image'
 import headsImage from '../public/Heads.png'
 import tailsImage from '../public/Tails.png'
 
-export default function Coin({flip}) {
+type CoinProps = {
+    flip: 'Heads' | 'Tails';
+};
+
+export default function Coin({flip}: CoinProps) {
     const isHeads = flip === 'Heads'
 
     return (
