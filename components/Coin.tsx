@@ -1,9 +1,11 @@
+import type { CoinSide } from '@/components/App'
+
 import Image from 'next/image'
 import headsImage from '../public/Heads.png'
 import tailsImage from '../public/Tails.png'
 
 type CoinProps = {
-    flip: 'Heads' | 'Tails';
+    flip: CoinSide;
 };
 
 export default function Coin({flip}: CoinProps) {
