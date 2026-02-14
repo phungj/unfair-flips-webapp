@@ -27,6 +27,7 @@ export type Cents = number
 // TODO: GEt heads chance integrated
 // TODO: other custom types for your upgrades?
 // TODO: Update coin image based on coin worth
+// TODO: add scrolling through flip history, make it 20 flips or so?
 
 export default function App() {
     const MAX_FLIPS = 10;
