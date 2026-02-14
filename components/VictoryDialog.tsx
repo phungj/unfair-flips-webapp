@@ -9,9 +9,9 @@ export default function VictoryDialog({flipCount}: VictoryDialogProps) {
     useEffect(() => {victoryDialogRef.current?.showModal();}, []);
 
     return (
-        <dialog ref={victoryDialogRef} className='text-center m-auto modal'>
-            <div className='modal-box'>
-                <h1 className='font-title text-heading text-2xl font-bold'>Congratulations!</h1>
+        <dialog ref={victoryDialogRef} className="text-center m-auto modal">
+            <div className="modal-box">
+                <h1 className="font-title text-heading text-2xl font-bold">Congratulations!</h1>
                 <h2>It took {flipCount} flips.</h2>
                 <h2>Refresh to play again!</h2>
             </div>
