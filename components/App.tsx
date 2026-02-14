@@ -22,8 +22,6 @@ export type Cents = number
 // TODO: Add endings
 // TODO: Implement saving and local storage
 // TODO: Get typing for variables as necessary
-// TOdo: Format heads chance as a percent
-// TODO: GEt heads chance integrated
 // TODO: other custom types for your upgrades?
 // TODO: Update coin image based on coin worth
 // TODO: add scrolling through flip history, make it 20 flips or so?
