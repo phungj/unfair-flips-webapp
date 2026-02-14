@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 import type {Cents} from "@/components/App";
 
@@ -13,18 +13,22 @@ type UpgradeButtonProps = {
 };
 
 export default function UpgradeButton({name, costs, cents, setCents, currentUpgradeValue, setUpgradeValue, computeNewUpgradeValue}: UpgradeButtonProps) {
-    const [currentCostIndex, setCurrentCostIndex] = useState<number>(0);
-    const [cost, setCost] = useState<number>(costs[currentCostIndex]);
-    const [maxed, setMaxed] = useState<boolean>(false);
+    const hasMounted = useRef<boolean>(false)
 
-    // TODO: update this so that it doesn't run on the initial render
+    const [currentCostIndex, setCurrentCostIndex] = useState<number>(0);
+    const cost = costs[currentCostIndex];
+    const maxed = currentCostIndex >= costs.length;
+
     useEffect(() => {
-        if (currentCostIndex < costs.length) {
-            setCents(cents - cost);
-            setUpgradeValue(computeNewUpgradeValue(currentUpgradeValue))
-            setCost(costs[currentCostIndex]);
-        } else {
-            setMaxed(true);
+        const lastCostIndex = currentCostIndex - 1
+
+        if (hasMounted.current && lastCostIndex < costs.length) {
+            setCents(cents - costs[lastCostIndex]);
+            setUpgradeValue(computeNewUpgradeValue(currentUpgradeValue));
+        }
+
+        if (!hasMounted.current) {
+            hasMounted.current = true;
         }
     }, [currentCostIndex]);
 
@@ -35,8 +39,7 @@ export default function UpgradeButton({name, costs, cents, setCents, currentUpgr
         </button>
     );
 
-    // TODO: Or figure out how ot best do this so that the value is reflected in the dom
     function onClick() {
-        setCurrentCostIndex(currentCostIndex + 1);
+        setCurrentCostIndex(currentCostIndex => currentCostIndex + 1);
     }
 }
