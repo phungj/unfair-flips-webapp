@@ -50,7 +50,7 @@ export default function App() {
             <TitleDialog/>
             <div className="min-h-screen flex items-center justify-center">
                 <div className="flex h-full gap-4">
-                    <UpgradeList cents={cents} setCents={setCents} headsChance={headsChance} setHeadsChance={updateHeadsChance} flipTime={flipTime} setFlipTime={updateFlipTime} comboMultiplier={comboMultiplier} setComboMultiplier={updateComboMultiplier} headsValue={headsValue} setHeadsValue={updateHeadsValue}/>
+                    <UpgradeList cents={cents} setCents={updateCents} headsChance={headsChance} setHeadsChance={updateHeadsChance} flipTime={flipTime} setFlipTime={updateFlipTime} comboMultiplier={comboMultiplier} setComboMultiplier={updateComboMultiplier} headsValue={headsValue} setHeadsValue={updateHeadsValue}/>
                     <div className="flex-1 text-center">
                         <h2 className="font-title text-heading text-2xl font-bold mb-2">Heads Chance: {headsChance.toLocaleString("en-US", {style:"percent"})}</h2>
                         <div className="mb-2">
