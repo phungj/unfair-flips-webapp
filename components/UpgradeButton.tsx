@@ -4,7 +4,7 @@ import type {Cents} from "@/components/App";
 
 type UpgradeButtonProps = {
     name: string,
-    costs: number[],
+    costs: Cents[],
     cents: Cents,
     setCents: (cents: Cents) => void,
     currentUpgradeValue: number,

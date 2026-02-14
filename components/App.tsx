@@ -15,7 +15,6 @@ export type Cents = number
 
 // TODO: Integrate heads chance upgrade
 // TODO: integrate flip time upgrade
-// tODO: Integrate combo multiplier upgrade
 
 // TODO: Coin display component?
 // TODO: style both sides of the components next to the heads so they're the same width and the coin is centered
@@ -39,7 +38,7 @@ export default function App() {
     const [cents, setCents] = useState<Cents>(0);
     const [headsChance, setHeadsChance] = useState<number>(0);
     const [flipTime, setFlipTime] = useState<number>(0);
-    const [comboMultiplier, setComboMultiplier] = useState<number>(0);
+    const [comboMultiplier, setComboMultiplier] = useState<number>(1);
     const [headsValue, setHeadsValue] = useState<number>(1);
 
     if (flips.length === MAX_FLIPS && flips.every(flip => flip === "Heads")) {
@@ -82,8 +81,14 @@ export default function App() {
         setFlipCount(flipCount + 1);
 
         if (flip === "Heads") {
-            setCents(cents + headsValue);
+            setCents(cents + headsValue * Math.ceil(comboMultiplier ** computeCombo()));
         }
+    }
+
+    function computeCombo(): number {
+        const lastTailsIndex = flips.lastIndexOf("Tails")
+
+        return flips.length - (lastTailsIndex == -1 ? 0 : lastTailsIndex)
     }
 
     function updateCents(cents: Cents) {
