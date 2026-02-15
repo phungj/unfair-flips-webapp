@@ -1,7 +1,7 @@
-import type { CoinSide } from "@/components/App"
+import type { CoinState } from "@/components/App"
 
 type FlipHistoryProps = {
-    flips: CoinSide[];
+    flips: CoinState[];
 };
 
 export default function FlipHistory({flips}: FlipHistoryProps) {

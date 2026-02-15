@@ -8,34 +8,32 @@ import FlipButton from "@/components/FlipButton";
 import FlipHistory from "@/components/FlipHistory";
 import VictoryDialog from "@/components/VictoryDialog";
 
-const COIN_SIDES = ["Heads", "Tails"] as const;
-export type CoinSide = typeof COIN_SIDES[number];
+const COIN_STATES = ["Heads", "Tails", "Flipping"] as const;
+export type CoinState = typeof COIN_STATES[number];
 
 export type Cents = number
 
-// TODO: Integrate heads chance upgrade
-// TODO: integrate flip time upgrade
+// TODO: Add endings
+// TODO: Update coin image based on coin worth
+// TODO: add scrolling through flip history, make it 20 flips or so?
+// TODO: Implement saving and local storage
+// TODO: Add the ability to reset your save
 
 // TODO: Coin display component?
 // TODO: style both sides of the components next to the heads so they're the same width and the coin is centered
-// TODO: update title accordingly once the game is ready
-// TODO: Add endings
-// TODO: Implement saving and local storage
 // TODO: Get typing for variables as necessary
-// TODO: other custom types for your upgrades?
-// TODO: Update coin image based on coin worth
-// TODO: add scrolling through flip history, make it 20 flips or so?
+// TODO: other custom types and enums for your upgrades?
 
 export default function App() {
     const MAX_FLIPS = 10;
 
-    const [flip, setFlip] = useState<CoinSide>("Heads");
-    const [flips, setFlips] = useState<CoinSide[]>([]);
+    const [flip, setFlip] = useState<CoinState>("Heads");
+    const [flips, setFlips] = useState<CoinState[]>([]);
     const [flipCount, setFlipCount] = useState<number>(0);
 
     const [cents, setCents] = useState<Cents>(0);
-    const [headsChance, setHeadsChance] = useState<number>(0);
-    const [flipTime, setFlipTime] = useState<number>(0);
+    const [headsChance, setHeadsChance] = useState<number>(0.20);
+    const [flipTime, setFlipTime] = useState<number>(2000);
     const [comboMultiplier, setComboMultiplier] = useState<number>(1);
     const [headsValue, setHeadsValue] = useState<number>(1);
 
@@ -54,7 +52,7 @@ export default function App() {
                         <div className="mb-2">
                             <Coin flip={flip}/>
                         </div>
-                        <FlipButton flipHandler={flipCoin}/>
+                        <FlipButton flipHandler={flipCoin} flip={flip}/>
                     </div>
                     <FlipHistory flips={flips}/>
                 </div>
@@ -62,25 +60,29 @@ export default function App() {
         </div>);
 
     function flipCoin() {
-        const flip = Math.random() < 0.5 ? "Heads" : "Tails";
+        setFlip("Flipping")
 
-        setFlip(flip);
+        setTimeout(() => {
+            const flip = Math.random() < headsChance ? "Heads" : "Tails";
 
-        const flipsCopy = structuredClone(flips);
+            setFlip(flip);
 
-        if (flipsCopy.length === MAX_FLIPS) {
-            flipsCopy.shift();
-        }
+            const flipsCopy = structuredClone(flips);
 
-        flipsCopy.push(flip);
+            if (flipsCopy.length === MAX_FLIPS) {
+                flipsCopy.shift();
+            }
 
-        setFlips(flipsCopy);
+            flipsCopy.push(flip);
 
-        setFlipCount(flipCount + 1);
+            setFlips(flipsCopy);
 
-        if (flip === "Heads") {
-            setCents(cents + headsValue * Math.ceil(comboMultiplier ** computeCombo()));
-        }
+            setFlipCount(flipCount + 1);
+
+            if (flip === "Heads") {
+                setCents(cents + headsValue * Math.ceil(comboMultiplier ** computeCombo()));
+            }
+        }, flipTime)
     }
 
     function computeCombo(): number {

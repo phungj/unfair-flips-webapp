@@ -1,14 +1,19 @@
-import type { CoinSide } from "@/components/App"
+import type { CoinState } from "@/components/App"
 
 import Image from "next/image"
 import headsImage from "../public/Heads.png"
 import tailsImage from "../public/Tails.png"
 
 type CoinProps = {
-    flip: CoinSide;
+    flip: CoinState;
 };
 
 export default function Coin({flip}: CoinProps) {
+    // TODO: Do smth better with this
+    if (flip === "Flipping") {
+        return <h1>Flipping...</h1>
+    }
+
     const isHeads = flip === "Heads"
 
     return (
