@@ -27,6 +27,7 @@ export const COMBO_MULTIPLIER_UPGRADE_INDEX = 2;
 export const HEADS_VALUE_UPGRADE_INDEX = 3;
 
 // TODO: DEBUG WHY SAVING ISN'T WORKING IN YOUR SAVE FUNCTION
+// TODO: Evaluate if you still need the reset flag
 
 // TODO: add scrolling through flip history, make it 20 flips or so?
 // TODO: Make enum and type use consistent

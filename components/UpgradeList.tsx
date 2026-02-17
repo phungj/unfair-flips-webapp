@@ -21,6 +21,7 @@ type UpgradeListProps = {
 };
 
 export default function UpgradeList({cents, setCents, upgradeCostIndices, updateCostIndex, headsChance, setHeadsChance, flipTime, setFlipTime, comboMultiplier, setComboMultiplier, headsValue, setHeadsValue, reset, setReset}: UpgradeListProps) {
+    const HEADS_CHANCE_COSTS = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000];
     const HEADS_CHANCE_INCREASE = 0.05;
 
     const FLIP_TIME_DECREASE = -200;
@@ -33,7 +34,7 @@ export default function UpgradeList({cents, setCents, upgradeCostIndices, update
             <h1 className="font-title text-heading text-2xl font-bold">Upgrades</h1>
             <h2 className="text-heading text-xl font-bold mb-2">{(cents / 100).toLocaleString("en-US", {style:"currency", currency:"USD"})}</h2>
             <div className="flex flex-col justify-between flex-1">
-                <UpgradeButton name="+5% Heads Chance" costs={[1, 10, 100, 1000, 10000, 100000, 1000000, 10000000]} costIndex={upgradeCostIndices[HEADS_CHANCE_UPGRADE_INDEX]} updateCostIndex={updateCostIndex} upgradeIndex={HEADS_CHANCE_UPGRADE_INDEX} cents={cents} setCents={setCents} currentUpgradeValue={headsChance} setUpgradeValue={setHeadsChance} computeNewUpgradeValue={curriedAdd(HEADS_CHANCE_INCREASE)} reset={reset} setReset={setReset}/>
+                <UpgradeButton name="+5% Heads Chance" costs={HEADS_CHANCE_COSTS} costIndex={upgradeCostIndices[HEADS_CHANCE_UPGRADE_INDEX]} updateCostIndex={updateCostIndex} upgradeIndex={HEADS_CHANCE_UPGRADE_INDEX} cents={cents} setCents={setCents} currentUpgradeValue={headsChance} setUpgradeValue={setHeadsChance} computeNewUpgradeValue={curriedAdd(HEADS_CHANCE_INCREASE)} reset={reset} setReset={setReset}/>
                 <UpgradeButton name="-0.2s Flip Time" costs={[1, 10, 100, 1000, 10000]} costIndex={upgradeCostIndices[FLIP_TIME_UPGRADE_INDEX]} updateCostIndex={updateCostIndex} upgradeIndex={FLIP_TIME_UPGRADE_INDEX} cents={cents} setCents={setCents} currentUpgradeValue={flipTime} setUpgradeValue={setFlipTime} computeNewUpgradeValue={curriedAdd(FLIP_TIME_DECREASE)} reset={reset} setReset={setReset}/>
                 <UpgradeButton name="+0.5x Heads Combo Multiplier" costs={[1, 10, 100, 1000, 10000]} costIndex={upgradeCostIndices[COMBO_MULTIPLIER_UPGRADE_INDEX]} updateCostIndex={updateCostIndex} upgradeIndex={COMBO_MULTIPLIER_UPGRADE_INDEX} cents={cents} setCents={setCents} currentUpgradeValue={comboMultiplier} setUpgradeValue={setComboMultiplier} computeNewUpgradeValue={curriedAdd(COMBO_MULTIPLIER_INCREASE)} reset={reset} setReset={setReset}/>
                 <UpgradeButton name="Upgrade Base Coin Worth" costs={[25, 100, 625, 10000]} costIndex={upgradeCostIndices[HEADS_VALUE_UPGRADE_INDEX]} updateCostIndex={updateCostIndex} upgradeIndex={HEADS_VALUE_UPGRADE_INDEX} cents={cents} setCents={setCents} currentUpgradeValue={headsValue} setUpgradeValue={setHeadsValue} computeNewUpgradeValue={computeNewHeadsValue} reset={reset} setReset={setReset}/>
@@ -45,8 +46,14 @@ export default function UpgradeList({cents, setCents, upgradeCostIndices, update
         return (x: number) => x + a;
     }
 
-    function upgradeHandler() {
-        // TODO:
+    // TODO: Implement and refactor with rest of handlers
+    function headsChanceUpgradeHandler() {
+        const lastCostIndex = upgradeCostIndices[HEADS_CHANCE_UPGRADE_INDEX] - 1;
+
+        if (lastCostIndex < HEADS_CHANCE_COSTS.length) {
+            setCents(cents - HEADS_CHANCE_COSTS[lastCostIndex]);
+            setHeadsChance(headsChance + HEADS_CHANCE_INCREASE);
+        }
     }
 
     function computeNewHeadsValue(headsValue: HEADS_VALUE) {
