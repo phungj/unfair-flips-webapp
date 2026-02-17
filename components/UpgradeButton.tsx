@@ -5,32 +5,38 @@ import type {Cents} from "@/components/App";
 type UpgradeButtonProps = {
     name: string,
     costs: Cents[],
+    costIndex: number,
+    updateCostIndex: (number) => void,
+    upgradeIndex: number,
     cents: Cents,
     setCents: (cents: Cents) => void,
     currentUpgradeValue: number,
     setUpgradeValue: (upgradeValue: number) => void,
-    computeNewUpgradeValue: (currentUpgradeValue: number) => number
+    computeNewUpgradeValue: (currentUpgradeValue: number) => number,
+    reset: boolean,
+    setReset: (boolean) => void
 };
 
-export default function UpgradeButton({name, costs, cents, setCents, currentUpgradeValue, setUpgradeValue, computeNewUpgradeValue}: UpgradeButtonProps) {
-    const hasMounted = useRef<boolean>(false)
+export default function UpgradeButton({name, costs, costIndex, updateCostIndex, upgradeIndex, cents, setCents, currentUpgradeValue, setUpgradeValue, computeNewUpgradeValue, reset, setReset}: UpgradeButtonProps) {
+    const hasMounted = useRef<boolean>(false);
 
-    const [currentCostIndex, setCurrentCostIndex] = useState<number>(0);
-    const cost = costs[currentCostIndex];
-    const maxed = currentCostIndex >= costs.length;
+    const cost = costs[costIndex];
+    const maxed = costIndex >= costs.length;
 
+    // TODO: Lift this logic from the upgrade button to the upgrade list via callbacks
     useEffect(() => {
-        const lastCostIndex = currentCostIndex - 1
+        const lastCostIndex = costIndex - 1
 
-        if (hasMounted.current && lastCostIndex < costs.length) {
+        if (hasMounted.current && !reset && lastCostIndex < costs.length) {
+            console.log(`Upgrading ${name}`)
             setCents(cents - costs[lastCostIndex]);
             setUpgradeValue(computeNewUpgradeValue(currentUpgradeValue));
-        }
-
-        if (!hasMounted.current) {
+        } else if (!hasMounted.current) {
             hasMounted.current = true;
+        } else if (reset) {
+            setReset(false);
         }
-    }, [currentCostIndex]);
+    }, [costIndex]);
 
     return (
         <button disabled={maxed || cents < cost} onClick={onClick} className="block mx-auto btn btn-primary w-full pb-10">
@@ -40,6 +46,6 @@ export default function UpgradeButton({name, costs, cents, setCents, currentUpgr
     );
 
     function onClick() {
-        setCurrentCostIndex(currentCostIndex => currentCostIndex + 1);
+        updateCostIndex(upgradeIndex);
     }
 }
