@@ -57,9 +57,6 @@ export default function App() {
     const [headsValue, setHeadsValue] = useState<HEADS_VALUE>(HEADS_VALUE.PENNY);
     const [upgradeCostIndices, setUpgradeCostIndices] = useState<number[]>([0, 0, 0, 0]);
 
-    // TODO: Should this be duplicated?
-    const reset = useRef<boolean>(false);
-
     const saveState = useMemo(() => (
         {flipCount, cents, headsChance, flipTime, comboMultiplier, headsValue, upgradeCostIndices}
     ), [flipCount, cents, headsChance, flipTime, comboMultiplier, headsValue, upgradeCostIndices]);
@@ -76,7 +73,7 @@ export default function App() {
             <TitleDialog/>
             <div className="min-h-screen flex items-center justify-center">
                 <div className="flex h-full gap-4">
-                    <UpgradeList cents={cents} setCents={updateCents} upgradeCostIndices={upgradeCostIndices} updateCostIndex={updateCostIndex} headsChance={headsChance} setHeadsChance={updateHeadsChance} flipTime={flipTime} setFlipTime={updateFlipTime} comboMultiplier={comboMultiplier} setComboMultiplier={updateComboMultiplier} headsValue={headsValue} setHeadsValue={updateHeadsValue} reset={reset.current} setReset={setReset}/>
+                    <UpgradeList cents={cents} setCents={updateCents} upgradeCostIndices={upgradeCostIndices} updateCostIndex={updateCostIndex} headsChance={headsChance} setHeadsChance={updateHeadsChance} flipTime={flipTime} setFlipTime={updateFlipTime} comboMultiplier={comboMultiplier} setComboMultiplier={updateComboMultiplier} headsValue={headsValue} setHeadsValue={updateHeadsValue}/>
                     <div className="flex-1 text-center">
                         <h2 className="font-title text-heading text-2xl font-bold mb-2">Heads Chance: {headsChance.toLocaleString("en-US", {style:"percent"})}</h2>
                         <div className="mb-2">
@@ -122,7 +119,7 @@ export default function App() {
     }
 
     function load() {
-        const loadedSaveState = JSON.parse(localStorage.getItem("save")) || {};
+        const loadedSaveState = JSON.parse(localStorage.getItem("save") || "{}");
 
         setFlipCount(loadedSaveState.flipCount || STARTING_FLIP_COUNT);
 
@@ -135,8 +132,6 @@ export default function App() {
     }
 
     function resetHandler() {
-        reset.current = true;
-
         setFlip("Heads");
         setFlips([]);
         setFlipCount(0);
@@ -148,11 +143,7 @@ export default function App() {
         setHeadsValue(HEADS_VALUE.PENNY);
     }
 
-    function setReset(current) {
-        reset.current = current;
-    }
-
-    function updateCostIndex(i) {
+    function updateCostIndex(i: number) {
         const updatedUpgradeCostIndices = structuredClone(upgradeCostIndices);
 
         updatedUpgradeCostIndices[i]++;

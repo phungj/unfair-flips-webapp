@@ -13,11 +13,9 @@ type UpgradeButtonProps = {
     currentUpgradeValue: number,
     setUpgradeValue: (upgradeValue: number) => void,
     computeNewUpgradeValue: (currentUpgradeValue: number) => number,
-    reset: boolean,
-    setReset: (boolean) => void
 };
 
-export default function UpgradeButton({name, costs, costIndex, updateCostIndex, upgradeIndex, cents, setCents, currentUpgradeValue, setUpgradeValue, computeNewUpgradeValue, reset, setReset}: UpgradeButtonProps) {
+export default function UpgradeButton({name, costs, costIndex, updateCostIndex, upgradeIndex, cents, setCents, currentUpgradeValue, setUpgradeValue, computeNewUpgradeValue}: UpgradeButtonProps) {
     const hasMounted = useRef<boolean>(false);
 
     const cost = costs[costIndex];
