@@ -26,17 +26,6 @@ export const FLIP_TIME_UPGRADE_INDEX = 1;
 export const COMBO_MULTIPLIER_UPGRADE_INDEX = 2;
 export const HEADS_VALUE_UPGRADE_INDEX = 3;
 
-// TODO: DEBUG WHY SAVING ISN'T WORKING IN YOUR SAVE FUNCTION
-// TODO: Evaluate if you still need the reset flag
-
-// TODO: add scrolling through flip history, make it 20 flips or so?
-// TODO: Make enum and type use consistent
-// TODO: Get semicolons in places
-// TODO: Coin display component?
-// TODO: style both sides of the components next to the heads so they're the same width and the coin is centered
-// TODO: Get typing for variables as necessary
-// TODO: other custom types and enums for your upgrades?
-
 export default function App() {
     const MAX_FLIPS = 10;
     const STARTING_FLIP_COUNT = 0;
@@ -141,6 +130,9 @@ export default function App() {
         setFlipTime(STARTING_FLIP_TIME);
         setComboMultiplier(1);
         setHeadsValue(HEADS_VALUE.PENNY);
+        setUpgradeCostIndices([0, 0, 0, 0])
+
+        localStorage.setItem("save", JSON.stringify(saveState));
     }
 
     function updateCostIndex(i: number) {

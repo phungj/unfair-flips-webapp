@@ -19,7 +19,6 @@ type CoinProps = {
 };
 
 export default function Coin({headsValue, flip}: CoinProps) {
-    // TODO: Do smth better with this
     let displayElement;
 
     if (flip === "Flipping") {

@@ -5,7 +5,6 @@ type FlipHistoryProps = {
 };
 
 export default function FlipHistory({flips}: FlipHistoryProps) {
-    // TODO: look into eliminating the hardcoded height here
     return (
         <div>
             <h1 className="font-title text-heading text-2xl font-bold">Last 10 Flips</h1>
