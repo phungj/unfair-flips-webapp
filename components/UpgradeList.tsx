@@ -54,10 +54,10 @@ export default function UpgradeList({cents, setCents, upgradeCostIndices, update
             <h1 className="font-title text-heading text-2xl font-bold">Upgrades</h1>
             <h2 className="text-heading text-xl font-bold mb-2">{(cents / 100).toLocaleString("en-US", {style:"currency", currency:"USD"})}</h2>
             <div className="flex flex-col justify-between flex-1">
-                <UpgradeButton name="+5% Heads Chance" cost={currentHeadsChanceUpgradeCost} canAfford={cents > currentHeadsChanceUpgradeCost} maxed={currentHeadsChanceUpgradeCostIndex >= HEADS_CHANCE_UPGRADE_COSTS.length} upgradeHandler={headsChanceUpgradeHandler}/>
-                <UpgradeButton name="-0.2s Flip Time" cost={currentFlipTimeUpgradeCost} canAfford={cents > currentFlipTimeUpgradeCost} maxed={currentFlipTimeUpgradeCostIndex >= FLIP_TIME_UPGRADE_COSTS.length} upgradeHandler={flipTimeUpgradeHandler}/>
-                <UpgradeButton name="+0.5x Heads Combo Multiplier" cost={currentComboMultiplierUpgradeCost} canAfford={cents > currentComboMultiplierUpgradeCost} maxed={currentComboMultiplierUpgradeCostIndex >= COMBO_MULTIPLIER_UPGRADE_COSTS.length} upgradeHandler={comboMultiplierUpgradeHandler}/>
-                <UpgradeButton name="Upgrade Base Coin Worth" cost={currentHeadsValueUpgradeCost} canAfford={cents > currentHeadsValueUpgradeCost} maxed={currentHeadsValueUpgradeCostIndex >= HEADS_VALUE_UPGRADE_COSTS.length} upgradeHandler={headsValueUpgradeHandler}/>
+                <UpgradeButton name="+5% Heads Chance" cost={currentHeadsChanceUpgradeCost} canAfford={cents >= currentHeadsChanceUpgradeCost} maxed={currentHeadsChanceUpgradeCostIndex >= HEADS_CHANCE_UPGRADE_COSTS.length} upgradeHandler={headsChanceUpgradeHandler}/>
+                <UpgradeButton name="-0.2s Flip Time" cost={currentFlipTimeUpgradeCost} canAfford={cents >= currentFlipTimeUpgradeCost} maxed={currentFlipTimeUpgradeCostIndex >= FLIP_TIME_UPGRADE_COSTS.length} upgradeHandler={flipTimeUpgradeHandler}/>
+                <UpgradeButton name="+0.5x Heads Combo Multiplier" cost={currentComboMultiplierUpgradeCost} canAfford={cents >= currentComboMultiplierUpgradeCost} maxed={currentComboMultiplierUpgradeCostIndex >= COMBO_MULTIPLIER_UPGRADE_COSTS.length} upgradeHandler={comboMultiplierUpgradeHandler}/>
+                <UpgradeButton name="Upgrade Base Coin Worth" cost={currentHeadsValueUpgradeCost} canAfford={cents >= currentHeadsValueUpgradeCost} maxed={currentHeadsValueUpgradeCostIndex >= HEADS_VALUE_UPGRADE_COSTS.length} upgradeHandler={headsValueUpgradeHandler}/>
             </div>
         </div>
     );
