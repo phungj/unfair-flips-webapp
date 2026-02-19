@@ -30,10 +30,12 @@ export default function App() {
     const MAX_FLIPS = 10;
     const STARTING_FLIP_COUNT = 0;
 
-    const STARTING_CENTS = 9999999;
-    const STARTING_HEADS_CHANCE = 1;
-    const STARTING_FLIP_TIME = 100;
+    const STARTING_CENTS = 0;
+    const STARTING_HEADS_CHANCE = 0.2;
+    const STARTING_FLIP_TIME = 2000;
     const STARTING_COMBO_MULTIPLIER = 1;
+
+    const [mounted, setMounted] = useState<boolean>(false);
 
     const [flip, setFlip] = useState<CoinState>("Heads");
     const [flips, setFlips] = useState<CoinState[]>([]);
@@ -51,29 +53,32 @@ export default function App() {
     ), [flipCount, cents, headsChance, flipTime, comboMultiplier, headsValue, upgradeCostIndices]);
 
     useEffect(() => load(), []);
+    useEffect(() => setMounted(true), []);
     useEffect(() => localStorage.setItem("save", JSON.stringify(saveState)), [saveState]);
 
-    if (flips.length === MAX_FLIPS && flips.every(flip => flip === "Heads")) {
+    if (!mounted) {
+        return null;
+    } else if (flips.length === MAX_FLIPS && flips.every(flip => flip === "Heads")) {
         return <VictoryDialog flipCount={flipCount} resetHandler={resetHandler}/>;
-    }
-
-    return (
-        <div>
-            <TitleDialog/>
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="flex h-full gap-4">
-                    <UpgradeList cents={cents} setCents={updateCents} upgradeCostIndices={upgradeCostIndices} updateCostIndex={updateCostIndex} headsChance={headsChance} setHeadsChance={updateHeadsChance} flipTime={flipTime} setFlipTime={updateFlipTime} comboMultiplier={comboMultiplier} setComboMultiplier={updateComboMultiplier} headsValue={headsValue} setHeadsValue={updateHeadsValue}/>
-                    <div className="flex-1 text-center">
-                        <h2 className="font-title text-heading text-2xl font-bold mb-2">Heads Chance: {headsChance.toLocaleString("en-US", {style:"percent"})}</h2>
-                        <div className="mb-2">
-                            <Coin headsValue={headsValue} flip={flip}/>
+    } else {
+        return (
+            <div>
+                <TitleDialog/>
+                <div className="min-h-screen flex items-center justify-center">
+                    <div className="flex h-full gap-4">
+                        <UpgradeList cents={cents} setCents={updateCents} upgradeCostIndices={upgradeCostIndices} updateCostIndex={updateCostIndex} headsChance={headsChance} setHeadsChance={updateHeadsChance} flipTime={flipTime} setFlipTime={updateFlipTime} comboMultiplier={comboMultiplier} setComboMultiplier={updateComboMultiplier} headsValue={headsValue} setHeadsValue={updateHeadsValue}/>
+                        <div className="flex-1 text-center">
+                            <h2 className="font-title text-heading text-2xl font-bold mb-2">Heads Chance: {headsChance.toLocaleString("en-US", {style:"percent"})}</h2>
+                            <div className="mb-2">
+                                <Coin headsValue={headsValue} flip={flip}/>
+                            </div>
+                            <FlipButton flipHandler={flipCoin} flip={flip}/>
                         </div>
-                        <FlipButton flipHandler={flipCoin} flip={flip}/>
+                        <FlipHistory flips={flips}/>
                     </div>
-                    <FlipHistory flips={flips}/>
                 </div>
-            </div>
-        </div>);
+            </div>);
+    }
 
     function flipCoin() {
         setFlip("Flipping")
@@ -96,6 +101,9 @@ export default function App() {
             setFlipCount(flipCount + 1);
 
             if (flip === "Heads") {
+                console.log(`Combo: ${computeCombo()}`);
+                console.log(`Combo Value ${comboMultiplier ** computeCombo()}`);
+
                 setCents(cents + headsValue * Math.ceil(comboMultiplier ** computeCombo()));
             }
         }, flipTime)
@@ -104,7 +112,7 @@ export default function App() {
     function computeCombo(): number {
         const lastTailsIndex = flips.lastIndexOf("Tails")
 
-        return flips.length - (lastTailsIndex == -1 ? 0 : lastTailsIndex)
+        return flips.length - (lastTailsIndex + 1);
     }
 
     function load() {
