@@ -22,7 +22,7 @@ export default function Coin({headsValue, flip}: CoinProps) {
     let displayElement;
 
     if (flip === "Flipping") {
-        displayElement = <h1 className='font-title text-heading text-2xl font-bold'>Flipping...</h1>;
+        displayElement = <span className="loading loading-spinner h-7/8 w-7/8 text-primary"></span>;
     } else {
         const isHeads = flip === "Heads";
 
