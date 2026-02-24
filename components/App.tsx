@@ -101,9 +101,6 @@ export default function App() {
             setFlipCount(flipCount + 1);
 
             if (flip === "Heads") {
-                console.log(`Combo: ${computeCombo()}`);
-                console.log(`Combo Value ${comboMultiplier ** computeCombo()}`);
-
                 setCents(cents + headsValue * Math.ceil(comboMultiplier ** computeCombo()));
             }
         }, flipTime)
