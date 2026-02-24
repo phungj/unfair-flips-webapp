@@ -7,9 +7,9 @@ type VictoryDialogProps = {
 
 export default function VictoryDialog({flipCount, resetHandler}: VictoryDialogProps) {
     const victoryDialogRef = useRef<HTMLDialogElement>(null);
-    useEffect(() => {victoryDialogRef.current?.showModal();}, []);
+    useEffect(() => victoryDialogRef.current?.showModal(), []);
 
-    useEffect(() => localStorage.removeItem("save"));
+    useEffect(() => localStorage.removeItem("save"), []);
 
     return (
         <dialog ref={victoryDialogRef} className="text-center m-auto modal">
