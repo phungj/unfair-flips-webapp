@@ -48,6 +48,8 @@ export default function App() {
     const [headsValue, setHeadsValue] = useState<HEADS_VALUE>(HEADS_VALUE.PENNY);
     const [upgradeCostIndices, setUpgradeCostIndices] = useState<number[]>([0, 0, 0, 0]);
 
+    const won = flips.length === MAX_FLIPS && flips.every(flip => flip === "Heads");
+
     const saveState = useMemo(() => (
         {flipCount, cents, headsChance, flipTime, comboMultiplier, headsValue, upgradeCostIndices}
     ), [flipCount, cents, headsChance, flipTime, comboMultiplier, headsValue, upgradeCostIndices]);
@@ -55,10 +57,15 @@ export default function App() {
     useEffect(() => load(), []);
     useEffect(() => setMounted(true), []);
     useEffect(() => localStorage.setItem("save", JSON.stringify(saveState)), [saveState]);
+    useEffect(() => {
+            if (won) {
+                localStorage.removeItem("save")
+            }
+        }, [won]);
 
     if (!mounted) {
         return null;
-    } else if (flips.length === MAX_FLIPS && flips.every(flip => flip === "Heads")) {
+    } else if (won) {
         return <VictoryDialog flipCount={flipCount} resetHandler={resetHandler}/>;
     } else {
         return (
